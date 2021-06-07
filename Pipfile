@@ -10,6 +10,8 @@ sklearn = "*"
 flask = "*"
 tensorflow = "*"
 kashgari = "*"
+gunicorn = "*"
+flask-cors = "*"
 
 [dev-packages]
 
