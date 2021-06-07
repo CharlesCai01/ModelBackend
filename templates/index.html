@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Get labels of contents</title>
+    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
+    <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
+    <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <i-input v-model="contents" type="textarea" placeholder="Enter the content, one line for one content"
+             id="contents-input"></i-input>
+    <i-button type="primary" @click="upload">Get labels of contents</i-button>
+    <div>{{contentLabelData}}</div>
+</div>
+<script>
+    let httpConfig = {
+        host: "127.0.0.1",
+        port: "9000"
+    }
+    new Vue({
+        el: '#app',
+        data: {
+            contents: '',
+            contentLabelData: ''
+        },
+        methods: {
+            async upload() {
+                let contents_json = this.getContentsJson();
+                try {
+                    let  url = `http://${httpConfig["host"]}:${httpConfig["port"]}/label/`;
+                    let res = await axios.post(url, contents_json);
+                    this.contentLabelData = res.data;
+
+                } catch (err) {
+                    this.$Message.error(`Fail to get labels, error message: ${err}`);
+                }
+            },
+            getContentsJson() {
+                let result = {inputstring: []};
+                let contentList = this.contents.split("\n");
+                for (let i = 0; i < contentList.length; i++) {
+                    let tmp = {content: contentList[i]}
+                    result["inputstring"].push(tmp);
+                }
+                return result;
+            }
+        },
+    })
+</script>
+</body>
+</html>

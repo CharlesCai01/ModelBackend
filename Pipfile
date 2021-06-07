@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+#url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "*"
+sklearn = "*"
+flask = "*"
+tensorflow = "*"
+kashgari = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
