@@ -1,6 +1,6 @@
 *.csv
-*.docx
 *.png
 BERT_NER.py
 pre_process.py
 .idea
+static/uploads

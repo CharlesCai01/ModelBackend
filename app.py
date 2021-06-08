@@ -18,6 +18,7 @@ class CustomFlask(Flask):
 
 
 app = CustomFlask(__name__, template_folder="templates")
+loaded_model = BiGRU_Model.load_model("weak_index234_ner_model")
 
 
 @app.route("/")
@@ -51,7 +52,7 @@ def get_labels():
     """
     if request.method == "POST":
         contents = request.get_json()
-        res = make_response(predict(contents, "weak_index234_ner_model"))
+        res = make_response(predict(contents))
         return res
 
 
@@ -79,7 +80,7 @@ def __get_wait_ann_four_data(contents_json):
     return content_list
 
 
-def predict(contents_json, model):
+def predict(contents_json):
     """
     predict the label of word of content.
     :param contents_json: The structure of contents json string:
@@ -90,7 +91,6 @@ def predict(contents_json, model):
             ......
         ]
     }
-    :param model: The path of model?
     :return: The contents with labels, example:
     {
         "outputstring": [
@@ -104,7 +104,6 @@ def predict(contents_json, model):
     """
     content_list = __get_wait_ann_four_data(contents_json)
     # Load saved model
-    loaded_model = BiGRU_Model.load_model(model)
     res = loaded_model.predict(content_list)
     assert len(content_list) == len(res)
     output_json = dict()
