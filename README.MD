@@ -1,4 +1,4 @@
 Run the project by gunicorn.  
 ```bash
-gunicorn -w 5 --threads=2  main:app
+gunicorn app:app -w 5 --threads=2 -b 0.0.0.0:9000
 ```
