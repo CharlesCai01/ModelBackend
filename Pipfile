@@ -1,17 +1,16 @@
 [[source]]
-url = "https://pypi.org/simple"
-#url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+#url = "https://pypi.org/simple"
+url = "https://pypi.mirrors.ustc.edu.cn/simple/"
 verify_ssl = true
 name = "pypi"
 
 [packages]
-pandas = "*"
-sklearn = "*"
-flask = "*"
-tensorflow = "*"
-kashgari = "*"
-gunicorn = "*"
-flask-cors = "*"
+flask = "==2.0.1"
+gunicorn = "==20.1.0"
+flask-cors = "==3.0.10"
+tensorflow = "==2.1"
+keras = "*"
+kashgari = "==2.0.0"
 
 [dev-packages]
 
