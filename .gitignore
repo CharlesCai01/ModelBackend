@@ -4,3 +4,4 @@ BERT_NER.py
 pre_process.py
 .idea
 static/uploads
+PIPENV_VENV_IN_PROJECT

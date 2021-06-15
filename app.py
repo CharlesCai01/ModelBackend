@@ -69,6 +69,51 @@ def semrep():
             return make_response(res_data)
 
 
+@app.route("/openie/", methods=["POST"])
+def openie():
+    if request.method == "POST":
+        contents = request.get_json()
+        if not contents.get("text", None):
+            return make_response({
+                "code": 401,
+                "data": None,
+                "message": "must input some text"
+            })
+        # data directory is if exists
+        data_path = "/home/test/openie/data"
+        if not os.path.exists(data_path):
+            os.makedirs(data_path)
+        input_filename = "{}.txt".format(str(uuid.uuid4()))
+        input_filepath = os.path.join(data_path, input_filename)
+        output_filepath = os.path.join(data_path, "{}.out".format(input_filename))
+        with open(input_filepath, "w", encoding="utf-8", errors="ignore") as f:
+            f.write(contents["text"])
+        # execute model
+        commands = [
+            "cd /home/test/openie/",
+            "nohup java -jar openie-assembly.jar --ignore-errors --encoding utf-8 {} {}".format(
+                input_filepath, output_filepath)
+        ]
+        execute_command = " && ".join(commands)
+        execute_status = subprocess.run(execute_command, shell=True)
+        if execute_status.returncode == 0:
+            res_data = {
+                "code": 200,
+                "data": {},
+                "message": "openie execute successfully."
+            }
+            with open(output_filepath, "r", encoding="utf-8", errors="ignore") as f:
+                res_data["data"]["text"] = f.read()
+            return make_response(res_data)
+        else:
+            res_data = {
+                "code": 400,
+                "data": None,
+                "message": "openie failed to execute."
+            }
+            return make_response(res_data)
+
+
 @app.route("/label/", methods=["POST"])
 @cross_origin()
 def get_labels():
